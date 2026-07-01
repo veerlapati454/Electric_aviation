@@ -1,5 +1,10 @@
 import React, { useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './About.css';
+import img3 from "../../assets/img3.webp"
+import img10 from "../../assets/img10.webp"
+import img11 from "../../assets/img11.webp"
+import img12 from "../../assets/img12.webp"
 
 const ArrowIcon = () => (
   <svg className="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -8,6 +13,7 @@ const ArrowIcon = () => (
 );
 
 const About = () => {
+  const navigate = useNavigate();
   const sectionRefs = useRef([]);
 
   useEffect(() => {
@@ -42,10 +48,7 @@ const About = () => {
             </p>
           </div>
         </div>
-        <div className="about-hero-scroll">
-          <span>Scroll to explore</span>
-          <div className="scroll-indicator"></div>
-        </div>
+        
       </section>
 
       {/* Mission Section */}
@@ -91,7 +94,7 @@ const About = () => {
             <div className="mission-visual reveal-about">
               <div className="mission-image-frame">
                 <img 
-                  src="https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=800&q=80" 
+                  src={img3} 
                   alt="Electric aircraft in flight"
                 />
                 <div className="mission-image-overlay"></div>
@@ -118,7 +121,7 @@ const About = () => {
           <div className="team-grid">
             <div className="team-card reveal-about">
               <div className="team-card-image">
-                <img src="https://i.pravatar.cc/400?img=11" alt="CEO" />
+                <img src={img10} alt="CEO" />
                 <div className="team-card-overlay">
                   <div className="team-social">
                     <a href="#">LinkedIn</a>
@@ -134,7 +137,7 @@ const About = () => {
             </div>
             <div className="team-card reveal-about">
               <div className="team-card-image">
-                <img src="https://i.pravatar.cc/400?img=12" alt="CTO" />
+                <img src={img11} alt="CTO" />
                 <div className="team-card-overlay">
                   <div className="team-social">
                     <a href="#">LinkedIn</a>
@@ -150,7 +153,7 @@ const About = () => {
             </div>
             <div className="team-card reveal-about">
               <div className="team-card-image">
-                <img src="https://i.pravatar.cc/400?img=13" alt="COO" />
+                <img src={img12} alt="COO" />
                 <div className="team-card-overlay">
                   <div className="team-social">
                     <a href="#">LinkedIn</a>
@@ -217,7 +220,7 @@ const About = () => {
           <div className="cta-wrapper">
             <h2>Ready to Join the<br />Electric Revolution?</h2>
             <p>Be part of the future of sustainable aviation</p>
-            <button className="btn-primary">
+            <button className="btn-primary" onClick={() => navigate('/404')}>
               Get Started <ArrowIcon />
             </button>
           </div>

@@ -1,5 +1,13 @@
 import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Features.css';
+import img15 from "../../assets/img15.webp"
+import img16 from "../../assets/img16.webp"
+import img17 from "../../assets/img17.webp"
+import img18 from "../../assets/img18.webp"
+import img19 from "../../assets/img19.webp"
+import img20 from "../../assets/img20.webp"
+
 
 const ArrowIcon = () => (
   <svg className="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -8,6 +16,8 @@ const ArrowIcon = () => (
 );
 
 const Features = () => {
+  const navigate = useNavigate();
+
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
@@ -26,37 +36,37 @@ const Features = () => {
       icon: '⚡',
       title: 'Instant Torque',
       description: 'Electric motors deliver immediate power response for unparalleled acceleration and smooth flight.',
-      image: 'https://images.unsplash.com/photo-1542296332-2e4473faf563?w=600&q=80'
+      image: img15
     },
     {
       icon: '🔋',
       title: 'Advanced Battery',
       description: 'Next-generation solid-state batteries with 450 Wh/kg density for extended range and rapid charging.',
-      image: 'https://images.unsplash.com/photo-1593941707882-a5bba14938c7?w=600&q=80'
+      image: img16
     },
     {
       icon: '🔄',
       title: 'Regenerative Systems',
       description: 'Energy recovery during descent and braking extends range and reduces energy consumption.',
-      image: 'https://images.unsplash.com/photo-1517479149777-5f3b1511d5ad?w=600&q=80'
+      image: img17
     },
     {
       icon: '🌊',
       title: 'Silent Operation',
       description: 'Whisper-quiet propulsion makes flights peaceful for passengers and communities alike.',
-      image: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&q=80'
+      image: img18
     },
     {
       icon: '🛡️',
       title: 'Redundant Safety',
       description: 'Multiple independent systems ensure fail-safe operation with real-time monitoring and diagnostics.',
-      image: 'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=600&q=80'
+      image: img19
     },
     {
       icon: '🌍',
       title: 'Zero Emissions',
       description: '100% electric propulsion eliminates direct CO₂ emissions and reduces environmental impact.',
-      image: 'https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=600&q=80'
+      image: img20
     }
   ];
 
@@ -99,7 +109,7 @@ const Features = () => {
                 <div className="feature-card-content">
                   <h3>{feature.title}</h3>
                   <p>{feature.description}</p>
-                  <button className="feature-learn-more">
+                  <button className="feature-learn-more" onClick={() => navigate('/404')}>
                     Learn More <ArrowIcon />
                   </button>
                 </div>
@@ -122,7 +132,7 @@ const Features = () => {
                 Explore our interactive 3D model to understand how each 
                 component works together to create the future of flight.
               </p>
-              <button className="btn-primary">
+              <button className="btn-primary" onClick={() => navigate('/404')}>
                 Launch Demo <ArrowIcon />
               </button>
             </div>

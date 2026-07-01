@@ -74,6 +74,9 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 60px;
+  align-items: start; /* FIX: prevents the shorter form column from stretching
+                          to match the taller info column, which was causing
+                          the large empty gap below the Send Message button */
 }
 
 /* Contact Form */
@@ -132,7 +135,7 @@
   color: var(--text-muted);
 }
 
-.form-input textarea {
+textarea.form-input {
   resize: vertical;
   min-height: 120px;
 }

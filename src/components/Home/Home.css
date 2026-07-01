@@ -22,6 +22,11 @@
   --error: #ff6161;
   --reveal-distance: 24px;
   --reveal-duration: 0.7s;
+
+  /* FIX: height of the fixed header, used to offset scroll-to-section jumps
+     and prevent content from being hidden under the nav bar. Adjust this if
+     Header.css changes the header's actual rendered height. */
+  --header-height: 92px;
 }
 
 /* --- Reset --- */
@@ -68,10 +73,6 @@ body {
   margin: 0 auto;
   padding: 0 24px;
   width: 100%;
-}
-
-.hidden-canvas {
-  display: none;
 }
 
 .icon {
@@ -200,14 +201,27 @@ textarea:focus-visible,
 }
 
 /* --- Section Styles --- */
+/* FIX: sections no longer force min-height: 100vh + align-items: center.
+   That combination centered each section's content inside a full-viewport
+   box — for sections whose content is shorter than the viewport (Features,
+   Tech, Testimonials, Stats), this left a large dead-space gap between the
+   header/tag and the actual content below it, since the content block was
+   floating in the middle of an artificially tall box rather than sitting
+   right after the section title.
+   Sections now size naturally to their content, top-aligned, with
+   consistent padding. Only .hero (below) keeps the full-screen centered
+   treatment, since that's the one section meant to fill the viewport.
+   scroll-margin-top still accounts for the fixed header so scrollIntoView()
+   from the nav doesn't tuck content behind it. */
 .section {
-  min-height: 100vh;
-  min-height: 100dvh;
-  display: flex;
-  align-items: center;
-  padding: 80px 0;
+  padding: calc(var(--header-height) + 60px) 0 80px;
   position: relative;
   overflow: hidden;
+  scroll-margin-top: var(--header-height);
+}
+
+.section > .container {
+  width: 100%;
 }
 
 .section-tag {
@@ -302,13 +316,14 @@ textarea:focus-visible,
 }
 
 /* ======================================================================
-   SECTION 1: HERO — UNCHANGED (do not edit anything below this point
-   until the "SECTION 2" comment; preserved verbatim from the original file)
+   SECTION 1: HERO
    ====================================================================== */
 
 .hero {
   min-height: 100vh;
   min-height: 100dvh;
+  display: flex;
+  align-items: center;
   justify-content: center;
   padding: 0;
 }
@@ -322,6 +337,12 @@ textarea:focus-visible,
   filter: brightness(0.5) saturate(0.8);
 }
 
+/* FIXED: the reveal image used to be masked by a per-frame canvas.toDataURL()
+   PNG generated in JS (main-thread-blocking, and the cause of delayed nav
+   clicks on the homepage). It's now a pure CSS radial-gradient mask driven
+   by the --x / --y custom properties, which are updated directly on this
+   element via a ref (see Home.jsx) instead of through React state. This
+   keeps the spotlight fully on the compositor/GPU and off the main thread. */
 .hero-reveal-image {
   position: absolute;
   inset: 0;
@@ -330,6 +351,11 @@ textarea:focus-visible,
   z-index: 2;
   pointer-events: none;
   filter: brightness(1.1) saturate(1.1) contrast(1.05);
+
+  --x: 50%;
+  --y: 50%;
+  mask-image: radial-gradient(280px circle at var(--x) var(--y), black 0%, black 55%, transparent 88%);
+  -webkit-mask-image: radial-gradient(280px circle at var(--x) var(--y), black 0%, black 55%, transparent 88%);
 }
 
 .hero-content {
@@ -1324,7 +1350,7 @@ textarea.form-input {
   }
 
   .section {
-    padding: 60px 0;
+    padding: calc(var(--header-height) + 30px) 0 60px;
   }
 
   .section-title {

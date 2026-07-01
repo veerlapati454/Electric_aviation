@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import './Home.css';
@@ -11,6 +12,14 @@ import {
   useCarouselKeyboard,
 } from './Hooks';
 import img1 from "../../assets/img1.webp"
+import img2 from "../../assets/img2.webp"
+import img3 from "../../assets/img3.webp"
+import img4 from "../../assets/img4.webp"
+import img5 from "../../assets/img5.webp"
+import img6 from "../../assets/img6.webp"
+import img7 from "../../assets/img7.webp"
+import img8 from "../../assets/img8.webp"
+import img9 from "../../assets/img9.webp"
 
 // --- Icons (unchanged) ---
 const ArrowIcon = () => (
@@ -84,75 +93,37 @@ const AlertIcon = () => (
 );
 
 // --- Assets (Two Images for Hero) — unchanged ---
-const BG_IMAGE_1 = "https://images.unsplash.com/photo-1542296332-2e4473faf563?w=1600&q=80";
-const BG_IMAGE_2 = "https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=1600&q=80";
+const BG_IMAGE_1 =img2
+const BG_IMAGE_2 =img3
 
 // --- Aviation-themed imagery for redesigned sections ---
-const IMG_COCKPIT = "https://images.unsplash.com/photo-1517479149777-5f3b1511d5ad?w=1200&q=80";
-const IMG_PROPELLER = "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?w=1200&q=80";
-const IMG_CLOUDS = "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1200&q=80";
-const IMG_CHARGE = "https://images.unsplash.com/photo-1593941707882-a5bba14938c7?w=1200&q=80";
+const IMG_COCKPIT = img4
+const IMG_PROPELLER = img5
+const IMG_CLOUDS = img6
+const IMG_CHARGE = img7
 const IMG_RUNWAY = img1;
-const IMG_WING = "https://images.unsplash.com/photo-1474302770737-173ee21bab63?w=1200&q=80";
-const IMG_AERIAL = "https://images.unsplash.com/photo-1583416750470-965b2707b355?w=1400&q=80";
-const IMG_NIGHTFLIGHT = "https://images.unsplash.com/photo-1583416750470-965b2707b355?w=1400&q=80";
+const IMG_WING = img8
+const IMG_AERIAL = img9
+const IMG_NIGHTFLIGHT = img9
 
-// --- Spotlight Component (Two Images) — unchanged ---
-const SpotlightReveal = ({ baseImage, revealImage, cursorX, cursorY }) => {
-  const canvasRef = useRef(null);
-  const [maskImage, setMaskImage] = useState(null);
-  const [dimensions, setDimensions] = useState({ width: window.innerWidth, height: window.innerHeight });
-
-  useEffect(() => {
-    const handleResize = () => setDimensions({ width: window.innerWidth, height: window.innerHeight });
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    canvas.width = dimensions.width;
-    canvas.height = dimensions.height;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    const gradient = ctx.createRadialGradient(cursorX, cursorY, 0, cursorX, cursorY, 280);
-    gradient.addColorStop(0, 'rgba(255,255,255,1)');
-    gradient.addColorStop(0.2, 'rgba(255,255,255,0.95)');
-    gradient.addColorStop(0.4, 'rgba(255,255,255,0.85)');
-    gradient.addColorStop(0.6, 'rgba(255,255,255,0.6)');
-    gradient.addColorStop(0.75, 'rgba(255,255,255,0.3)');
-    gradient.addColorStop(0.88, 'rgba(255,255,255,0.1)');
-    gradient.addColorStop(1, 'rgba(255,255,255,0)');
-
-    ctx.beginPath();
-    ctx.arc(cursorX, cursorY, 280, 0, Math.PI * 2);
-    ctx.fillStyle = gradient;
-    ctx.fill();
-
-    setMaskImage(canvas.toDataURL());
-  }, [cursorX, cursorY, dimensions]);
-
-  return (
-    <>
-      <canvas ref={canvasRef} className="hidden-canvas" />
-      <div className="hero-base-image" style={{ backgroundImage: `url(${baseImage})` }} />
-      <div
-        className="hero-reveal-image"
-        style={{
-          backgroundImage: `url(${revealImage})`,
-          maskImage: maskImage ? `url(${maskImage})` : 'none',
-          WebkitMaskImage: maskImage ? `url(${maskImage})` : 'none',
-          maskSize: '100% 100%',
-          WebkitMaskSize: '100% 100%',
-        }}
-      />
-    </>
-  );
-};
+// --- Spotlight Component (Two Images) ---
+// FIXED: no longer uses <canvas> + toDataURL() to build a per-frame PNG mask.
+// That approach forced a synchronous, main-thread-blocking image encode on
+// every mousemove-driven animation frame (~60x/sec), which is what delayed
+// nav-link clicks specifically while on the homepage. Now the spotlight is a
+// pure CSS radial-gradient mask, and its position is updated by writing CSS
+// custom properties directly to the DOM node via a ref — no React re-render,
+// no canvas, no toDataURL, so the main thread stays free for click handling.
+const SpotlightReveal = ({ baseImage, revealImage, revealRef }) => (
+  <>
+    <div className="hero-base-image" style={{ backgroundImage: `url(${baseImage})` }} />
+    <div
+      ref={revealRef}
+      className="hero-reveal-image"
+      style={{ backgroundImage: `url(${revealImage})` }}
+    />
+  </>
+);
 
 /* ======================================================================
    SECTION 2 — ABOUT: scroll-revealed mission timeline + tilt visual card
@@ -177,6 +148,7 @@ const AboutStat = ({ value, suffix = '', label, isInView, delay = 0 }) => {
 };
 
 const AboutSection = ({ innerRef }) => {
+  const navigate = useNavigate();
   const [revealRef, isInView] = useInView({ threshold: 0.25 });
   const tiltRef = useTilt({ max: 6, scale: 1.03 });
 
@@ -219,7 +191,7 @@ const AboutSection = ({ innerRef }) => {
               ))}
             </ol>
 
-            <button className="btn-primary">
+            <button className="btn-primary" onClick={() => navigate('/404')}>
               Learn More <ArrowIcon />
             </button>
           </div>
@@ -341,6 +313,8 @@ const FeatureCard = ({ feature, index }) => {
         <h3>{feature.title}</h3>
         <p>{feature.summary}</p>
 
+        {/* NOTE: left functional (expand/collapse), not wired to navigate —
+            see message accompanying this file for why. */}
         <button
           type="button"
           className="feature-toggle"
@@ -423,6 +397,7 @@ const RadialMetric = ({ value, max, suffix, label, isInView, delay = 0 }) => {
 };
 
 const TechnologySection = ({ innerRef }) => {
+  const navigate = useNavigate();
   const [revealRef, isInView] = useInView({ threshold: 0.3 });
   const metrics = [
     { value: 450, max: 500, suffix: '', label: 'km Range' },
@@ -457,7 +432,9 @@ const TechnologySection = ({ innerRef }) => {
               while maintaining safety and longevity. The result is practical electric
               flight that meets real-world demands.
             </p>
-            <button className="btn-primary">Discover Technology <ArrowIcon /></button>
+            <button className="btn-primary" onClick={() => navigate('/404')}>
+              Discover Technology <ArrowIcon />
+            </button>
           </div>
 
           <div className="tech-visual">
@@ -597,6 +574,8 @@ const TestimonialsSection = ({ innerRef }) => {
           ))}
         </div>
 
+        {/* NOTE: left functional (carousel pagination), not wired to navigate —
+            see message accompanying this file for why. */}
         <div className="carousel-dots" role="tablist" aria-label="Select testimonial">
           {TESTIMONIALS.map((t, i) => (
             <button
@@ -696,6 +675,7 @@ const validate = (values) => {
 };
 
 const ContactSection = ({ innerRef }) => {
+  const navigate = useNavigate();
   const [values, setValues] = useState(initialFormState);
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
@@ -734,6 +714,7 @@ const ContactSection = ({ innerRef }) => {
       setStatus('success');
       setValues(initialFormState);
       setTouched({});
+      navigate('/404');
     } catch {
       setStatus('error');
     }
@@ -866,14 +847,21 @@ const ContactSection = ({ innerRef }) => {
    ====================================================================== */
 
 const Home = () => {
-  const [cursorPos, setCursorPos] = useState({ x: -999, y: -999 });
+  const navigate = useNavigate();
   const [activeSection, setActiveSection] = useState(0);
+
+  // FIXED: cursor position is no longer pushed through React state on every
+  // animation frame. Instead we write directly to the reveal image's CSS
+  // custom properties (--x / --y) via a ref. The browser's CSS engine then
+  // handles the radial-gradient mask on the compositor, so mousemove no
+  // longer triggers 60 re-renders/sec (and no canvas.toDataURL() call at
+  // all) — this is what was blocking nav-link clicks on the homepage.
+  const revealRef = useRef(null);
   const mouse = useRef({ x: -999, y: -999 });
   const smooth = useRef({ x: -999, y: -999 });
   const rafRef = useRef(null);
   const sectionRefs = useRef([]);
 
-  // Mouse tracking with smoothing (hero spotlight only) — unchanged
   useEffect(() => {
     const handleMouseMove = (e) => {
       mouse.current.x = e.clientX;
@@ -885,7 +873,10 @@ const Home = () => {
     const animate = () => {
       smooth.current.x += (mouse.current.x - smooth.current.x) * 0.08;
       smooth.current.y += (mouse.current.y - smooth.current.y) * 0.08;
-      setCursorPos({ x: smooth.current.x, y: smooth.current.y });
+      if (revealRef.current) {
+        revealRef.current.style.setProperty('--x', `${smooth.current.x}px`);
+        revealRef.current.style.setProperty('--y', `${smooth.current.y}px`);
+      }
       rafRef.current = requestAnimationFrame(animate);
     };
 
@@ -920,13 +911,12 @@ const Home = () => {
     <div className="app">
       <Header activeSection={activeSection} scrollToSection={scrollToSection} />
 
-      {/* SECTION 1: Hero — unchanged */}
+      {/* SECTION 1: Hero */}
       <section className="section hero" ref={el => sectionRefs.current[0] = el}>
         <SpotlightReveal
           baseImage={BG_IMAGE_1}
           revealImage={BG_IMAGE_2}
-          cursorX={cursorPos.x}
-          cursorY={cursorPos.y}
+          revealRef={revealRef}
         />
 
         <div className="hero-content">
@@ -943,10 +933,10 @@ const Home = () => {
             and impossibly efficient. The sky is no longer the limit.
           </p>
           <div className="hero-buttons">
-            <button className="btn-primary btn-lg">
+            <button className="btn-primary btn-lg" onClick={() => navigate('/404')}>
               Explore Aircraft <ArrowIcon />
             </button>
-            <button className="btn-secondary btn-lg">
+            <button className="btn-secondary btn-lg" onClick={() => navigate('/404')}>
               <PlayIcon /> Watch Demo
             </button>
           </div>

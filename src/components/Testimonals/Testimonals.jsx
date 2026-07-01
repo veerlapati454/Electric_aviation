@@ -1,5 +1,12 @@
 import React, { useEffect } from 'react';
 import './Testimonals.css';
+import img10 from "../../assets/img10.webp"
+import img11 from "../../assets/img11.webp"
+import img12 from "../../assets/img12.webp"
+import img21 from "../../assets/img21.webp"
+import img22 from "../../assets/img22.webp"
+import img23 from "../../assets/img23.webp"
+
 
 const Testimonals = () => {
   useEffect(() => {
@@ -19,7 +26,7 @@ const Testimonals = () => {
     {
       name: 'Dr. Sarah Chen',
       role: 'Test Pilot',
-      avatar: 'https://i.pravatar.cc/150?img=1',
+      avatar: img10,
       quote: 'The silence is surreal. You feel connected to the sky in a way you never could before.',
       rating: 5,
       date: 'December 2024'
@@ -27,7 +34,7 @@ const Testimonals = () => {
     {
       name: 'James Rodriguez',
       role: 'Commercial Pilot',
-      avatar: 'https://i.pravatar.cc/150?img=2',
+      avatar: img11,
       quote: 'Incredible range and performance. This is not the future—it is the present.',
       rating: 5,
       date: 'November 2024'
@@ -35,7 +42,7 @@ const Testimonals = () => {
     {
       name: 'Emily Park',
       role: 'Aerospace Engineer',
-      avatar: 'https://i.pravatar.cc/150?img=3',
+      avatar: img12,
       quote: 'The instant torque and smooth power delivery make every flight effortless.',
       rating: 5,
       date: 'October 2024'
@@ -43,7 +50,7 @@ const Testimonals = () => {
     {
       name: 'Michael Torres',
       role: 'Fleet Operator',
-      avatar: 'https://i.pravatar.cc/150?img=4',
+      avatar: img21,
       quote: 'Operating costs are significantly lower. This is the future of regional aviation.',
       rating: 5,
       date: 'September 2024'
@@ -51,7 +58,7 @@ const Testimonals = () => {
     {
       name: 'Dr. Lisa Nakamura',
       role: 'Environmental Scientist',
-      avatar: 'https://i.pravatar.cc/150?img=5',
+      avatar: img12,
       quote: 'Zero emissions without compromising performance. A true breakthrough.',
       rating: 5,
       date: 'August 2024'
@@ -59,7 +66,7 @@ const Testimonals = () => {
     {
       name: 'David Okafor',
       role: 'Airline Executive',
-      avatar: 'https://i.pravatar.cc/150?img=6',
+      avatar: img23,
       quote: 'Passenger satisfaction scores are off the charts. Quiet, smooth, and sustainable.',
       rating: 5,
       date: 'July 2024'
@@ -157,7 +164,7 @@ const Testimonals = () => {
               </p>
               <div className="featured-author">
                 <div className="featured-avatar">
-                  <img src="https://i.pravatar.cc/150?img=10" alt="Featured author" />
+                  <img src= {img10} alt="Featured author" />
                 </div>
                 <div>
                   <strong>Dr. Alan Wright</strong>

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Contact.css';
 
 const ArrowIcon = () => (
@@ -8,6 +9,8 @@ const ArrowIcon = () => (
 );
 
 const Contact = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -39,23 +42,24 @@ const Contact = () => {
     e.preventDefault();
     // Handle form submission
     console.log('Form submitted:', formData);
+    navigate('/404');
   };
 
   const contactInfo = [
     {
       icon: '📧',
       title: 'Email',
-      details: ['hello@aether.aviation', 'support@aether.aviation']
+      details: ['hello@stackly.aviation', 'support@.aviation']
     },
     {
       icon: '📍',
       title: 'Location',
-      details: ['San Francisco, CA', 'United States']
+      details: ['Hyderabad, ', 'India']
     },
     {
       icon: '📞',
       title: 'Phone',
-      details: ['+1 (555) 123-4567', 'Mon-Fri 9:00-18:00 PST']
+      details: ['9991234567', 'Mon-Fri 9:00-18:00 ']
     },
     {
       icon: '🌐',
@@ -171,7 +175,7 @@ const Contact = () => {
               </div>
               <div className="contact-cta">
                 <p>We're always looking for talented individuals to join our team.</p>
-                <button className="btn-secondary">
+                <button className="btn-secondary" onClick={() => navigate('/404')}>
                   View Careers <ArrowIcon />
                 </button>
               </div>
@@ -197,8 +201,8 @@ const Contact = () => {
                 <div className="address-item">
                   <span>📍</span>
                   <div>
-                    <strong>Aether Aviation HQ</strong>
-                    <p>123 Innovation Way, San Francisco, CA 94105</p>
+                    <strong>stacly Aviation HQ</strong>
+                    <p>123 Innovation Way, hyderabad, CA 500070</p>
                   </div>
                 </div>
                 <div className="address-item">
@@ -231,8 +235,12 @@ const Contact = () => {
             <h2>Ready to Shape the Future of Aviation?</h2>
             <p>Join us in our mission to make electric flight accessible to all.</p>
             <div className="cta-buttons">
-              <button className="btn-primary">Get Started <ArrowIcon /></button>
-              <button className="btn-secondary">Learn More</button>
+              <button className="btn-primary" onClick={() => navigate('/404')}>
+                Get Started <ArrowIcon />
+              </button>
+              <button className="btn-secondary" onClick={() => navigate('/404')}>
+                Learn More
+              </button>
             </div>
           </div>
         </div>
