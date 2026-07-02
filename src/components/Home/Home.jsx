@@ -8,7 +8,6 @@ import {
   useReducedMotion,
   useCountUp,
   useTilt,
-  useStatusFocus,
   useCarouselKeyboard,
 } from './Hooks';
 import img1 from "../../assets/img1.webp"
@@ -78,17 +77,9 @@ const PlusIcon = () => (
   </svg>
 );
 
-const CheckCircleIcon = () => (
+const PhoneIcon = () => (
   <svg className="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-    <circle cx="12" cy="12" r="10" strokeWidth={1.5} />
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12.5l2.5 2.5L16 9" />
-  </svg>
-);
-
-const AlertIcon = () => (
-  <svg className="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-    <circle cx="12" cy="12" r="10" strokeWidth={1.5} />
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v5m0 3h.01" />
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 5c0-1.1.9-2 2-2h2.28a1 1 0 01.97.76l.86 3.45a1 1 0 01-.5 1.13l-1.7.85a11.05 11.05 0 005.5 5.5l.85-1.7a1 1 0 011.13-.5l3.45.86a1 1 0 01.76.97V19c0 1.1-.9 2-2 2h-1C7.82 21 3 16.18 3 10.5V5z" />
   </svg>
 );
 
@@ -230,132 +221,7 @@ const AboutSection = ({ innerRef }) => {
   );
 };
 
-/* ======================================================================
-   SECTION 3 — FEATURES: tilting, flippable cards (click or Enter/Space)
-   ====================================================================== */
 
-const FEATURES = [
-  {
-    id: 'silent-power',
-    img: IMG_PROPELLER,
-    alt: 'Close-up of an electric aircraft propulsion motor',
-    Icon: LightningIcon,
-    title: 'Silent Power',
-    summary: 'Electric motors deliver instant torque without the noise of combustion engines.',
-    detail: 'A direct-drive electric motor delivers peak torque from 0 RPM, eliminating the gearbox and exhaust noise of a combustion drivetrain — cruise noise stays under 65dB at 500ft.',
-  },
-  {
-    id: 'advanced-battery',
-    img: IMG_CHARGE,
-    alt: 'Aircraft battery pack charging on the tarmac',
-    Icon: BatteryIcon,
-    title: 'Advanced Battery',
-    summary: 'Next-gen battery cells provide extended range with rapid charging capability.',
-    detail: 'Aviation-grade cell chemistry balances energy density against thermal safety margins, enabling a 30-minute rapid charge cycle without compromising pack longevity.',
-  },
-  {
-    id: 'zero-carbon',
-    img: IMG_CLOUDS,
-    alt: 'Clear sky above the clouds',
-    Icon: GlobeIcon,
-    title: 'Zero Carbon',
-    summary: '100% electric propulsion means zero direct emissions during flight.',
-    detail: 'No fuel is burned in flight, so there is no direct CO₂, NOx, or particulate output at any altitude — a measurable shift for short-haul regional routes.',
-  },
-  {
-    id: 'safe-reliable',
-    img: IMG_WING,
-    alt: 'Aircraft wing in flight above clouds',
-    Icon: ShieldIcon,
-    title: 'Safe & Reliable',
-    summary: 'Redundant systems and advanced safety features for peace of mind.',
-    detail: 'Triple-redundant flight control and independent battery strings mean a single component failure never grounds the aircraft mid-flight.',
-  },
-];
-
-const FeatureCard = ({ feature, index }) => {
-  const [flipped, setFlipped] = useState(false);
-  const tiltRef = useTilt({ max: 5, scale: 1.015 });
-  const { Icon } = feature;
-  const panelId = `feature-detail-${feature.id}`;
-
-  const toggle = useCallback(() => setFlipped((f) => !f), []);
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      toggle();
-    }
-  };
-
-  return (
-    <div
-      ref={tiltRef}
-      className="feature-card feature-card--image glass-card"
-      data-flipped={flipped}
-      style={{
-        transform:
-          'perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)) scale(var(--tilt-scale, 1))',
-      }}
-    >
-      <div className="feature-card-image">
-        <img
-          src={feature.img}
-          srcSet={`${feature.img.replace('w=1200', 'w=600')} 600w, ${feature.img} 1200w`}
-          sizes="(max-width: 768px) 100vw, 25vw"
-          alt={feature.alt}
-          loading="lazy"
-          width="1200"
-          height="750"
-        />
-      </div>
-      <div className="feature-card-body">
-        <div className="feature-icon"><Icon /></div>
-        <h3>{feature.title}</h3>
-        <p>{feature.summary}</p>
-
-        {/* NOTE: left functional (expand/collapse), not wired to navigate —
-            see message accompanying this file for why. */}
-        <button
-          type="button"
-          className="feature-toggle"
-          aria-expanded={flipped}
-          aria-controls={panelId}
-          onClick={toggle}
-          onKeyDown={handleKeyDown}
-        >
-          <span className="feature-toggle-icon" data-flipped={flipped}><PlusIcon /></span>
-          {flipped ? 'Hide technical detail' : 'Technical detail'}
-        </button>
-
-        <div
-          id={panelId}
-          className="feature-detail"
-          role="region"
-          aria-label={`${feature.title} technical detail`}
-          hidden={!flipped}
-        >
-          <p>{feature.detail}</p>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const FeaturesSection = ({ innerRef }) => (
-  <section className="section features" ref={innerRef}>
-    <div className="container">
-      <div className="section-header">
-        <span className="section-tag">Engineering</span>
-        <h2 className="section-title">Innovation at Every <span className="highlight">Level</span></h2>
-      </div>
-      <div className="features-grid">
-        {FEATURES.map((feature, i) => (
-          <FeatureCard key={feature.id} feature={feature} index={i} />
-        ))}
-      </div>
-    </div>
-  </section>
-);
 
 /* ======================================================================
    SECTION 4 — TECHNOLOGY: data-driven SVG radial metrics (replaces the
@@ -656,185 +522,63 @@ const StatsSection = ({ innerRef }) => {
 };
 
 /* ======================================================================
-   SECTION 7 — CONTACT: accessible neumorphic form with inline validation
-   (message field now flexes to fill any leftover vertical space)
+   SECTION 7 — CONTACT: form removed. This is now a single centered column
+   (info + contact details + image) instead of the old two-column
+   info/form grid — see .contact-grid / .contact-info-centered in Home.css.
+   Phone number added as a contact-item next to the address.
    ====================================================================== */
-
-const initialFormState = { name: '', email: '', message: '' };
-
-const validate = (values) => {
-  const errors = {};
-  if (!values.name.trim()) errors.name = 'Enter your name.';
-  if (!values.email.trim()) {
-    errors.email = 'Enter your email address.';
-  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) {
-    errors.email = 'Enter a valid email address.';
-  }
-  if (!values.message.trim()) errors.message = 'Enter a message.';
-  return errors;
-};
 
 const ContactSection = ({ innerRef }) => {
   const navigate = useNavigate();
-  const [values, setValues] = useState(initialFormState);
-  const [errors, setErrors] = useState({});
-  const [touched, setTouched] = useState({});
-  const [status, setStatus] = useState('idle'); // idle | submitting | success | error
-  const statusMessage =
-    status === 'success' ? 'Message sent — we\u2019ll reply within one business day.' :
-    status === 'error' ? 'Something went wrong sending your message. Please try again.' : '';
-  const statusRef = useStatusFocus(statusMessage);
-
-  const handleChange = (field) => (e) => {
-    const value = e.target.value;
-    setValues((v) => ({ ...v, [field]: value }));
-    if (touched[field]) {
-      setErrors((errs) => validate({ ...values, [field]: value }));
-    }
-  };
-
-  const handleBlur = (field) => () => {
-    setTouched((t) => ({ ...t, [field]: true }));
-    setErrors(validate(values));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const validationErrors = validate(values);
-    setErrors(validationErrors);
-    setTouched({ name: true, email: true, message: true });
-    if (Object.keys(validationErrors).length > 0) return;
-
-    setStatus('submitting');
-    try {
-      // Replace with a real endpoint — this stub simulates network latency.
-      await new Promise((resolve, reject) => {
-        setTimeout(() => (Math.random() > 0.1 ? resolve() : reject()), 900);
-      });
-      setStatus('success');
-      setValues(initialFormState);
-      setTouched({});
-      navigate('/404');
-    } catch {
-      setStatus('error');
-    }
-  };
 
   return (
     <section className="section contact" ref={innerRef}>
       <div className="container">
-        <div className="contact-grid">
-          <div className="contact-info">
-            <span className="section-tag">Get in Touch</span>
-            <h2 className="section-title">Ready to <span className="highlight">Take Off</span>?</h2>
-            <p className="section-text">
-              Join the revolution in electric aviation. Whether you're an investor,
-              pilot, or enthusiast, we'd love to hear from you.
-            </p>
-            <div className="contact-details">
-              <div className="contact-item glass-card neumorphic">
-                <span className="contact-emoji" aria-hidden="true">✉</span>
-                <div>
-                  <strong>Email</strong>
-                  <p>hello@aether.aviation</p>
-                </div>
-              </div>
-              <div className="contact-item glass-card neumorphic">
-                <span className="contact-emoji" aria-hidden="true">📍</span>
-                <div>
-                  <strong>Location</strong>
-                  <p>San Francisco, CA</p>
-                </div>
+        <div className="contact-info contact-info-centered">
+          <span className="section-tag">Get in Touch</span>
+          <h2 className="section-title">Ready to <span className="highlight">Take Off</span>?</h2>
+          <p className="section-text">
+            Join the revolution in electric aviation. Whether you're an investor,
+            pilot, or enthusiast, we'd love to hear from you.
+          </p>
+          <div className="contact-details contact-details-row">
+            <div className="contact-item glass-card neumorphic">
+              <span className="contact-emoji" aria-hidden="true">✉</span>
+              <div>
+                <strong>Email</strong>
+                <p>hello@stackly.aviation</p>
               </div>
             </div>
-            <div className="contact-image-card glass-card">
-              <img
-                src={IMG_NIGHTFLIGHT}
-                srcSet={`${IMG_NIGHTFLIGHT.replace('w=1400', 'w=700')} 700w, ${IMG_NIGHTFLIGHT} 1400w`}
-                sizes="(max-width: 768px) 100vw, 50vw"
-                alt="Electric aircraft taking off at night"
-                loading="lazy"
-                width="1400"
-                height="788"
-              />
-              <CornerFrame />
-              <span className="about-image-tag">NIGHT OPS / 06</span>
+            <div className="contact-item glass-card neumorphic">
+              <span className="contact-emoji" aria-hidden="true">📍</span>
+              <div>
+                <strong>Location</strong>
+                <p>Hyderabad, CA</p>
+              </div>
+            </div>
+            <div className="contact-item glass-card neumorphic">
+              <PhoneIcon />
+              <div>
+                <strong>Phone</strong>
+                <p>+91 9876543451</p>
+              </div>
             </div>
           </div>
-
-          <div className="contact-form-wrapper glass-card neumorphic">
-            <form className="contact-form" onSubmit={handleSubmit} noValidate>
-              <div className="form-field">
-                <label htmlFor="contact-name">Your name</label>
-                <input
-                  id="contact-name"
-                  type="text"
-                  className="form-input"
-                  value={values.name}
-                  onChange={handleChange('name')}
-                  onBlur={handleBlur('name')}
-                  aria-invalid={!!(touched.name && errors.name)}
-                  aria-describedby={errors.name ? 'contact-name-error' : undefined}
-                  autoComplete="name"
-                />
-                {touched.name && errors.name && (
-                  <p id="contact-name-error" className="form-error" role="alert">{errors.name}</p>
-                )}
-              </div>
-
-              <div className="form-field">
-                <label htmlFor="contact-email">Email address</label>
-                <input
-                  id="contact-email"
-                  type="email"
-                  className="form-input"
-                  value={values.email}
-                  onChange={handleChange('email')}
-                  onBlur={handleBlur('email')}
-                  aria-invalid={!!(touched.email && errors.email)}
-                  aria-describedby={errors.email ? 'contact-email-error' : undefined}
-                  autoComplete="email"
-                />
-                {touched.email && errors.email && (
-                  <p id="contact-email-error" className="form-error" role="alert">{errors.email}</p>
-                )}
-              </div>
-
-              {/* form-field--message: this field grows to absorb leftover vertical
-                  space in the form, instead of sitting at a fixed min-height. */}
-              <div className="form-field form-field--message">
-                <label htmlFor="contact-message">Your message</label>
-                <textarea
-                  id="contact-message"
-                  placeholder="Tell us what you're interested in"
-                  className="form-input"
-                  value={values.message}
-                  onChange={handleChange('message')}
-                  onBlur={handleBlur('message')}
-                  aria-invalid={!!(touched.message && errors.message)}
-                  aria-describedby={errors.message ? 'contact-message-error' : undefined}
-                />
-                {touched.message && errors.message && (
-                  <p id="contact-message-error" className="form-error" role="alert">{errors.message}</p>
-                )}
-              </div>
-
-              <button type="submit" className="btn-primary" disabled={status === 'submitting'}>
-                {status === 'submitting' ? 'Sending…' : 'Send Message'} <ArrowIcon />
-              </button>
-
-              {statusMessage && (
-                <p
-                  ref={statusRef}
-                  tabIndex={-1}
-                  role="status"
-                  className={`form-status form-status--${status}`}
-                >
-                  {status === 'success' ? <CheckCircleIcon /> : <AlertIcon />}
-                  {statusMessage}
-                </p>
-              )}
-            </form>
+          <button className="btn-primary" onClick={() => navigate('/404')}>
+            Contact Us <ArrowIcon />
+          </button>
+          <div className="contact-image-card glass-card">
+            <img
+              src={IMG_NIGHTFLIGHT}
+              srcSet={`${IMG_NIGHTFLIGHT.replace('w=1400', 'w=700')} 700w, ${IMG_NIGHTFLIGHT} 1400w`}
+              sizes="(max-width: 768px) 100vw, 60vw"
+              alt="Electric aircraft taking off at night"
+              loading="lazy"
+              width="1400"
+              height="788"
+            />
+            <CornerFrame />
+            <span className="about-image-tag">NIGHT OPS / 06</span>
           </div>
         </div>
       </div>
@@ -944,7 +688,6 @@ const Home = () => {
       </section>
 
       <AboutSection innerRef={el => sectionRefs.current[1] = el} />
-      <FeaturesSection innerRef={el => sectionRefs.current[2] = el} />
       <TechnologySection innerRef={el => sectionRefs.current[3] = el} />
       <TestimonialsSection innerRef={el => sectionRefs.current[4] = el} />
       <StatsSection innerRef={el => sectionRefs.current[5] = el} />

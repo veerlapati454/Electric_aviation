@@ -661,149 +661,6 @@ textarea:focus-visible,
 }
 
 /* ======================================================================
-   SECTION 3: FEATURES — tilt + flip cards
-   ====================================================================== */
-
-.features {
-  background: var(--bg-primary);
-}
-
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 24px;
-}
-
-.feature-card {
-  padding: 0;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg);
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color var(--transition), box-shadow var(--transition);
-  transform-style: preserve-3d;
-}
-
-.feature-card:hover,
-.feature-card:focus-within {
-  border-color: var(--primary);
-  box-shadow: 0 20px 60px rgba(0, 168, 232, 0.06);
-}
-
-.feature-card-image {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 10;
-  overflow: hidden;
-}
-
-.feature-card-image::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(10, 10, 15, 0) 30%, var(--bg-card) 100%),
-              linear-gradient(180deg, rgba(10,10,15,0.15), rgba(10,10,15,0.15));
-}
-
-.feature-card-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: saturate(1.05);
-  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-  display: block;
-}
-
-.feature-card:hover .feature-card-image img {
-  transform: scale(1.08);
-}
-
-.feature-card-body {
-  padding: 24px 24px 26px;
-  display: flex;
-  flex-direction: column;
-}
-
-.feature-icon {
-  width: 56px;
-  height: 56px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0, 168, 232, 0.08);
-  border-radius: 14px;
-  margin-bottom: 16px;
-  margin-top: -52px;
-  position: relative;
-  z-index: 2;
-  border: 1px solid var(--border-color);
-  transition: var(--transition);
-}
-
-.feature-card:hover .feature-icon,
-.feature-card:focus-within .feature-icon {
-  background: rgba(0, 168, 232, 0.16);
-  transform: scale(1.05);
-}
-
-.feature-card h3 {
-  font-size: 20px;
-  font-weight: 600;
-  margin-bottom: 8px;
-}
-
-.feature-card p {
-  color: var(--text-secondary);
-  font-size: 15px;
-  line-height: 1.7;
-}
-
-/* Toggle button (keyboard + click) that reveals technical detail.
-   Hover is a bonus affordance, not a requirement -- the button is the
-   primary, fully-keyboard-operable trigger. */
-.feature-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 16px;
-  padding: 8px 0;
-  background: none;
-  border: none;
-  color: var(--primary);
-  font-size: 14px;
-  font-weight: 600;
-  font-family: 'Inter', sans-serif;
-  cursor: pointer;
-  width: fit-content;
-}
-
-.feature-toggle-icon {
-  display: inline-flex;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.feature-toggle-icon[data-flipped="true"] {
-  transform: rotate(45deg);
-}
-
-.feature-detail {
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px solid var(--border-color);
-  font-size: 14px;
-  color: var(--text-secondary);
-  line-height: 1.7;
-  animation: detailIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-@keyframes detailIn {
-  from { opacity: 0; transform: translateY(-6px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* ======================================================================
    SECTION 4: TECHNOLOGY — data-driven SVG radial metrics
    ====================================================================== */
 
@@ -1099,17 +956,43 @@ textarea:focus-visible,
   background: var(--bg-primary);
 }
 
-.contact-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 60px;
-}
-
-.contact-details {
+/* Section is now a single centered column (form removed) instead of a
+   two-column info/form grid. contact-info-centered constrains width and
+   centers everything; contact-details-row lays the three contact items
+   (email / location / phone) out side by side. */
+.contact-info-centered {
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
   display: flex;
   flex-direction: column;
+  align-items: center;
+}
+
+.contact-info-centered .section-text {
+  margin: 0 auto;
+}
+
+/* Merged into a single rule (previously .contact-details set
+   flex-direction: column and .contact-details-row set flex-direction: row
+   on the same element with equal specificity — whichever was declared
+   later in the file silently won, which is why the "row" was collapsing
+   back into a stacked column of oversized boxes). */
+.contact-details.contact-details-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   gap: 16px;
+  justify-content: center;
+  width: 100%;
   margin-top: 24px;
+  margin-bottom: 8px;
+}
+
+.contact-details-row .contact-item {
+  flex: 0 1 260px;
+  width: 260px;
+  text-align: left;
 }
 
 .contact-item {
@@ -1121,6 +1004,12 @@ textarea:focus-visible,
   border: 1px solid var(--border-color);
   border-radius: var(--radius);
   transition: var(--transition);
+  margin-bottom: 7px;
+}
+
+.contact-item .icon-sm {
+  flex-shrink: 0;
+  stroke: var(--primary);
 }
 
 .contact-item:hover {
@@ -1149,6 +1038,7 @@ textarea:focus-visible,
   overflow: hidden;
   aspect-ratio: 16 / 9;
   border: 1px solid var(--border-color);
+  width: 100%;
 }
 
 .contact-image-card img {
@@ -1166,111 +1056,10 @@ textarea:focus-visible,
   background: linear-gradient(180deg, rgba(10,10,15,0) 55%, rgba(10,10,15,0.8) 100%);
 }
 
-.contact-form-wrapper {
-  padding: 32px;
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg);
-  display: flex; /* stretches contact-form to fill the wrapper's full height */
-}
-
-.contact-form {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  width: 100%;
-}
-
-.form-field {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.form-field label {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-secondary);
-  letter-spacing: 0.02em;
-}
-
-/* Message field grows to absorb all leftover vertical space in the form;
-   name/email fields and the submit button keep their natural size. */
-.form-field--message {
-  flex: 1;
-  min-height: 0; /* allows the flex child to shrink below content size when needed */
-}
-
-.form-field--message .form-input {
-  flex: 1;
-  min-height: 140px;
-  height: 100%;
-  resize: vertical; /* user can still drag it taller if they want */
-}
-
-.form-input {
-  padding: 14px 18px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius);
-  color: white;
-  font-size: 15px;
-  font-family: 'Inter', sans-serif;
-  transition: var(--transition);
-  width: 100%;
-}
-
-.form-input:focus {
-  outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 30px var(--primary-glow);
-}
-
-.form-input[aria-invalid="true"] {
-  border-color: var(--error);
-}
-
-.form-input::placeholder {
-  color: var(--text-muted);
-}
-
-textarea.form-input {
-  resize: vertical;
-  min-height: 100px;
-}
-
-.form-error {
-  font-size: 13px;
-  color: var(--error);
-}
-
-.form-status {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 4px;
-  padding: 12px 16px;
-  border-radius: var(--radius);
-  font-size: 14px;
-}
-
-.form-status--success {
-  background: rgba(46, 204, 113, 0.1);
-  border: 1px solid rgba(46, 204, 113, 0.3);
-  color: var(--success);
-}
-
-.form-status--error {
-  background: rgba(255, 97, 97, 0.1);
-  border: 1px solid rgba(255, 97, 97, 0.3);
-  color: var(--error);
-}
-
 /* --- Responsive --- */
 @media (max-width: 1024px) {
   .about-grid,
-  .tech-grid,
-  .contact-grid {
+  .tech-grid {
     grid-template-columns: 1fr;
     gap: 40px;
   }
@@ -1313,14 +1102,6 @@ textarea.form-input {
     font-size: 20px;
   }
 
-  .features-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .feature-icon {
-    margin-top: -44px;
-  }
-
   .tech-metrics.radial-metrics {
     grid-template-columns: 1fr;
     max-width: 200px;
@@ -1341,12 +1122,11 @@ textarea.form-input {
     aspect-ratio: 16 / 10;
   }
 
-  .contact-form-wrapper {
-    padding: 20px;
-  }
-
-  .form-field--message .form-input {
-    min-height: 120px;
+  /* Contact items stack full-width on smaller screens instead of sitting
+     three-across, since there isn't room for all three at 260px each. */
+  .contact-details-row .contact-item {
+    flex: 1 1 100%;
+    width: 100%;
   }
 
   .section {
@@ -1385,10 +1165,6 @@ textarea.form-input {
     grid-template-columns: 1fr;
   }
 
-  .contact-grid {
-    gap: 30px;
-  }
-
   .btn-primary,
   .btn-secondary {
     padding: 10px 20px;
@@ -1424,8 +1200,7 @@ textarea.form-input {
     transform: none !important;
   }
 
-  .tilt-card,
-  .feature-card {
+  .tilt-card {
     transform: none !important;
   }
 
