@@ -48,6 +48,11 @@ const Header = () => {
     setIsMenuOpen(false);
   };
 
+  const handleLogin = () => {
+    navigate('/login');
+    setIsMenuOpen(false);
+  };
+
   // Close menu on ESC key
   useEffect(() => {
     const handleEsc = (e) => {
@@ -93,6 +98,16 @@ const Header = () => {
               {link.label}
             </NavLink>
           ))}
+          {/* Login link - only visible on mobile */}
+          <NavLink
+            to="/login"
+            className={({ isActive }) => 
+              `nav-link mobile-login ${isActive ? 'active' : ''}`
+            }
+            onClick={handleLogin}
+          >
+            Login
+          </NavLink>
         </div>
 
         <div className="nav-actions">

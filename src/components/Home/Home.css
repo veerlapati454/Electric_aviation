@@ -16,16 +16,10 @@
   --radius: 16px;
   --radius-lg: 24px;
   --transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-
-  /* New tokens used only by the redesigned sections 2-7 */
   --success: #2ecc71;
   --error: #ff6161;
   --reveal-distance: 24px;
   --reveal-duration: 0.7s;
-
-  /* FIX: height of the fixed header, used to offset scroll-to-section jumps
-     and prevent content from being hidden under the nav bar. Adjust this if
-     Header.css changes the header's actual rendered height. */
   --header-height: 92px;
 }
 
@@ -91,7 +85,6 @@ body {
   stroke: var(--primary);
 }
 
-/* Visually-hidden but available to assistive tech (used throughout sections 2-7) */
 .sr-only {
   position: absolute;
   width: 1px;
@@ -104,7 +97,6 @@ body {
   border: 0;
 }
 
-/* Consistent visible keyboard focus across every interactive element we add */
 button:focus-visible,
 input:focus-visible,
 textarea:focus-visible,
@@ -201,18 +193,6 @@ textarea:focus-visible,
 }
 
 /* --- Section Styles --- */
-/* FIX: sections no longer force min-height: 100vh + align-items: center.
-   That combination centered each section's content inside a full-viewport
-   box — for sections whose content is shorter than the viewport (Features,
-   Tech, Testimonials, Stats), this left a large dead-space gap between the
-   header/tag and the actual content below it, since the content block was
-   floating in the middle of an artificially tall box rather than sitting
-   right after the section title.
-   Sections now size naturally to their content, top-aligned, with
-   consistent padding. Only .hero (below) keeps the full-screen centered
-   treatment, since that's the one section meant to fill the viewport.
-   scroll-margin-top still accounts for the fixed header so scrollIntoView()
-   from the nav doesn't tuck content behind it. */
 .section {
   padding: calc(var(--header-height) + 60px) 0 80px;
   position: relative;
@@ -273,7 +253,6 @@ textarea:focus-visible,
   margin-bottom: 12px;
 }
 
-/* Shared corner-frame signature device, used on image panels */
 .corner-frame {
   position: absolute;
   inset: 10px;
@@ -285,7 +264,6 @@ textarea:focus-visible,
   z-index: 2;
 }
 
-/* Shared glass / neumorphic card treatments, reused across sections 2-7 */
 .glass-card {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
@@ -300,8 +278,6 @@ textarea:focus-visible,
     -6px -6px 16px rgba(255, 255, 255, 0.02);
 }
 
-/* Generic scroll-reveal primitive: every animated entrance in sections 2-7 uses
-   this same data-attribute pattern so the motion language stays consistent. */
 .about-reveal {
   opacity: 0;
   transform: translateY(var(--reveal-distance));
@@ -316,7 +292,7 @@ textarea:focus-visible,
 }
 
 /* ======================================================================
-   SECTION 1: HERO
+   SECTION 1: HERO - Simplified
    ====================================================================== */
 
 .hero {
@@ -326,36 +302,31 @@ textarea:focus-visible,
   align-items: center;
   justify-content: center;
   padding: 0;
+  position: relative;
+  overflow: hidden;
 }
 
-.hero-base-image {
+.hero-background {
   position: absolute;
   inset: 0;
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
   z-index: 1;
-  filter: brightness(0.5) saturate(0.8);
+  filter: brightness(0.5) saturate(0.9);
+  transform: scale(1.05);
 }
 
-/* FIXED: the reveal image used to be masked by a per-frame canvas.toDataURL()
-   PNG generated in JS (main-thread-blocking, and the cause of delayed nav
-   clicks on the homepage). It's now a pure CSS radial-gradient mask driven
-   by the --x / --y custom properties, which are updated directly on this
-   element via a ref (see Home.jsx) instead of through React state. This
-   keeps the spotlight fully on the compositor/GPU and off the main thread. */
-.hero-reveal-image {
+.hero-overlay {
   position: absolute;
   inset: 0;
-  background-size: cover;
-  background-position: center;
   z-index: 2;
-  pointer-events: none;
-  filter: brightness(1.1) saturate(1.1) contrast(1.05);
-
-  --x: 50%;
-  --y: 50%;
-  mask-image: radial-gradient(280px circle at var(--x) var(--y), black 0%, black 55%, transparent 88%);
-  -webkit-mask-image: radial-gradient(280px circle at var(--x) var(--y), black 0%, black 55%, transparent 88%);
+  background: linear-gradient(
+    180deg,
+    rgba(10, 10, 15, 0.3) 0%,
+    rgba(10, 10, 15, 0.7) 40%,
+    rgba(10, 10, 15, 0.9) 100%
+  );
 }
 
 .hero-content {
@@ -452,52 +423,8 @@ textarea:focus-visible,
   animation: fadeUp 1s ease 1s both;
 }
 
-.hero-scroll {
-  position: absolute;
-  bottom: 40px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  animation: fadeUp 1s ease 1.4s both;
-}
-
-.hero-scroll span {
-  font-size: 12px;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-}
-
-.scroll-bar {
-  width: 2px;
-  height: 40px;
-  background: rgba(255, 255, 255, 0.06);
-  border-radius: 2px;
-  position: relative;
-  overflow: hidden;
-}
-
-.scroll-progress {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 60%;
-  background: var(--primary);
-  border-radius: 2px;
-  animation: scrollAnim 3s ease-in-out infinite;
-}
-
-@keyframes scrollAnim {
-  0%, 100% { transform: translateY(-100%); }
-  50% { transform: translateY(0); }
-}
-
 /* ======================================================================
-   SECTION 2: ABOUT — mission timeline + tilt visual card
+   SECTION 2: ABOUT
    ====================================================================== */
 
 .about {
@@ -515,9 +442,7 @@ textarea:focus-visible,
   margin-bottom: 28px;
 }
 
-/* Timeline: a real sequence of engineering milestones, so numbering carries
-   information here (unlike a generic 01/02/03 decoration). */
-.about-timeline {
+.aether-about-timeline {
   display: flex;
   flex-direction: column;
   gap: 22px;
@@ -526,7 +451,7 @@ textarea:focus-visible,
   position: relative;
 }
 
-.about-timeline::before {
+.aether-about-timeline::before {
   content: '';
   position: absolute;
   left: 15px;
@@ -537,13 +462,13 @@ textarea:focus-visible,
   opacity: 0.25;
 }
 
-.timeline-item {
+.aether-timeline-item {
   display: flex;
   gap: 18px;
   align-items: flex-start;
 }
 
-.timeline-marker {
+.aether-timeline-marker {
   flex-shrink: 0;
   width: 32px;
   height: 32px;
@@ -561,13 +486,13 @@ textarea:focus-visible,
   z-index: 1;
 }
 
-.timeline-body strong {
+.aether-timeline-body strong {
   display: block;
   font-size: 15px;
   margin-bottom: 4px;
 }
 
-.timeline-body p {
+.aether-timeline-body p {
   font-size: 14px;
   color: var(--text-secondary);
   line-height: 1.6;
@@ -603,8 +528,6 @@ textarea:focus-visible,
   background: linear-gradient(180deg, rgba(10, 10, 15, 0) 50%, rgba(10, 10, 15, 0.75) 100%);
 }
 
-/* Tilt is applied via inline custom properties from useTilt(); transform-style
-   keeps the perspective stable and transition smooths the return-to-rest. */
 .tilt-card {
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   transform-style: preserve-3d;
@@ -661,7 +584,7 @@ textarea:focus-visible,
 }
 
 /* ======================================================================
-   SECTION 4: TECHNOLOGY — data-driven SVG radial metrics
+   SECTION 4: TECHNOLOGY
    ====================================================================== */
 
 .technology {
@@ -692,7 +615,7 @@ textarea:focus-visible,
 .radial-svg {
   width: 100%;
   max-width: 120px;
-  transform: rotate(-90deg); /* start the progress sweep at 12 o'clock */
+  transform: rotate(-90deg);
 }
 
 .radial-track {
@@ -718,6 +641,11 @@ textarea:focus-visible,
   justify-content: center;
   text-align: center;
 }
+
+.tech-content .section-text {
+  margin-bottom: 2rem;
+}
+
 
 .metric-value {
   font-size: 22px;
@@ -754,9 +682,7 @@ textarea:focus-visible,
 }
 
 /* ======================================================================
-   SECTION 5: TESTIMONIALS — accessible scroll-snap carousel
-   (prev/next arrow buttons removed; native scroll/swipe + dot pagination
-   below remain the navigation surface)
+   SECTION 5: TESTIMONIALS
    ====================================================================== */
 
 .testimonials {
@@ -772,8 +698,6 @@ textarea:focus-visible,
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
   padding: 4px;
-  /* Native horizontal scroll + snap means the carousel is fully usable by mouse
-     drag, trackpad, touch swipe, or keyboard, even before any JS handler runs. */
 }
 
 .testimonials-track::-webkit-scrollbar {
@@ -858,7 +782,7 @@ textarea:focus-visible,
 }
 
 /* ======================================================================
-   SECTION 6: STATS — full-bleed banner with count-up circles
+   SECTION 6: STATS
    ====================================================================== */
 
 .stats {
@@ -949,17 +873,13 @@ textarea:focus-visible,
 }
 
 /* ======================================================================
-   SECTION 7: CONTACT — accessible neumorphic form
+   SECTION 7: CONTACT
    ====================================================================== */
 
 .contact {
   background: var(--bg-primary);
 }
 
-/* Section is now a single centered column (form removed) instead of a
-   two-column info/form grid. contact-info-centered constrains width and
-   centers everything; contact-details-row lays the three contact items
-   (email / location / phone) out side by side. */
 .contact-info-centered {
   max-width: 720px;
   margin: 0 auto;
@@ -973,11 +893,6 @@ textarea:focus-visible,
   margin: 0 auto;
 }
 
-/* Merged into a single rule (previously .contact-details set
-   flex-direction: column and .contact-details-row set flex-direction: row
-   on the same element with equal specificity — whichever was declared
-   later in the file silently won, which is why the "row" was collapsing
-   back into a stacked column of oversized boxes). */
 .contact-details.contact-details-row {
   display: flex;
   flex-direction: row;
@@ -1102,6 +1017,44 @@ textarea:focus-visible,
     font-size: 20px;
   }
 
+  /* Mobile-only: center the mission-brief timeline cards. Desktop/tablet
+     keep the left-aligned marker + text layout defined above untouched. */
+  .aether-about-timeline {
+    align-items: center;
+    width: 100%;
+  }
+
+  /* The connecting line was a fixed -16px offset from center, tuned for the
+     desktop marker position. On narrow phones (425px and below) that fixed
+     offset reads as visibly uncentered, so the line is dropped on mobile
+     entirely -- it's a left-column timeline device that doesn't apply once
+     cards stack and center. */
+  .aether-about-timeline::before {
+    display: none;
+  }
+
+  .aether-timeline-item {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+    max-width: 380px;
+    margin: 0 auto;
+  }
+
+  .aether-timeline-marker {
+    margin: 0 auto;
+  }
+
+  .aether-timeline-body {
+    width: 100%;
+  }
+
+  .aether-timeline-body p {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
   .tech-metrics.radial-metrics {
     grid-template-columns: 1fr;
     max-width: 200px;
@@ -1122,8 +1075,6 @@ textarea:focus-visible,
     aspect-ratio: 16 / 10;
   }
 
-  /* Contact items stack full-width on smaller screens instead of sitting
-     three-across, since there isn't room for all three at 260px each. */
   .contact-details-row .contact-item {
     flex: 1 1 100%;
     width: 100%;
@@ -1187,7 +1138,6 @@ textarea:focus-visible,
   .hero-line2,
   .hero-text,
   .hero-buttons,
-  .hero-scroll,
   .hero-badge {
     animation: none !important;
     opacity: 1 !important;

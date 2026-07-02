@@ -20,7 +20,7 @@ import img7 from "../../assets/img7.webp"
 import img8 from "../../assets/img8.webp"
 import img9 from "../../assets/img9.webp"
 
-// --- Icons (unchanged) ---
+// --- Icons ---
 const ArrowIcon = () => (
   <svg className="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -60,7 +60,6 @@ const ShieldIcon = () => (
   </svg>
 );
 
-// Small corner-bracket / HUD frame used as a recurring signature device (unchanged)
 const CornerFrame = () => (
   <svg className="corner-frame" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
     <path d="M2 18 L2 2 L18 2" fill="none" stroke="currentColor" strokeWidth="1.5" />
@@ -70,7 +69,6 @@ const CornerFrame = () => (
   </svg>
 );
 
-// --- New icons used only by the redesigned sections ---
 const PlusIcon = () => (
   <svg className="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -83,38 +81,16 @@ const PhoneIcon = () => (
   </svg>
 );
 
-// --- Assets (Two Images for Hero) — unchanged ---
-const BG_IMAGE_1 =img2
-const BG_IMAGE_2 =img3
-
-// --- Aviation-themed imagery for redesigned sections ---
-const IMG_COCKPIT = img4
-const IMG_PROPELLER = img5
-const IMG_CLOUDS = img6
-const IMG_CHARGE = img7
+// --- Assets ---
+const BG_IMAGE = img2; // Single background image for hero
+const IMG_COCKPIT = img4;
+const IMG_PROPELLER = img5;
+const IMG_CLOUDS = img6;
+const IMG_CHARGE = img7;
 const IMG_RUNWAY = img1;
-const IMG_WING = img8
-const IMG_AERIAL = img9
-const IMG_NIGHTFLIGHT = img9
-
-// --- Spotlight Component (Two Images) ---
-// FIXED: no longer uses <canvas> + toDataURL() to build a per-frame PNG mask.
-// That approach forced a synchronous, main-thread-blocking image encode on
-// every mousemove-driven animation frame (~60x/sec), which is what delayed
-// nav-link clicks specifically while on the homepage. Now the spotlight is a
-// pure CSS radial-gradient mask, and its position is updated by writing CSS
-// custom properties directly to the DOM node via a ref — no React re-render,
-// no canvas, no toDataURL, so the main thread stays free for click handling.
-const SpotlightReveal = ({ baseImage, revealImage, revealRef }) => (
-  <>
-    <div className="hero-base-image" style={{ backgroundImage: `url(${baseImage})` }} />
-    <div
-      ref={revealRef}
-      className="hero-reveal-image"
-      style={{ backgroundImage: `url(${revealImage})` }}
-    />
-  </>
-);
+const IMG_WING = img8;
+const IMG_AERIAL = img9;
+const IMG_NIGHTFLIGHT = img9;
 
 /* ======================================================================
    SECTION 2 — ABOUT: scroll-revealed mission timeline + tilt visual card
@@ -132,7 +108,6 @@ const AboutStat = ({ value, suffix = '', label, isInView, delay = 0 }) => {
         {count}{suffix}
       </span>
       <span className="stat-label">{label}</span>
-      {/* Real value for assistive tech — avoids announcing intermediate counter frames */}
       <span className="sr-only">{value}{suffix} {label}</span>
     </div>
   );
@@ -164,17 +139,16 @@ const AboutSection = ({ innerRef }) => {
               to create silent, efficient, and sustainable flight.
             </p>
 
-            {/* Timeline reads as a true sequence (engineering milestones), so numbering is meaningful here */}
-            <ol className="about-timeline">
+            <ol className="aether-about-timeline">
               {timeline.map((item, i) => (
                 <li
                   key={item.id}
-                  className="timeline-item about-reveal"
+                  className="aether-timeline-item about-reveal"
                   data-revealed={isInView}
                   style={{ '--reveal-delay': `${150 + i * 120}ms` }}
                 >
-                  <span className="timeline-marker" aria-hidden="true">{item.id}</span>
-                  <div className="timeline-body">
+                  <span className="aether-timeline-marker" aria-hidden="true">{item.id}</span>
+                  <div className="aether-timeline-body">
                     <strong>{item.label}</strong>
                     <p>{item.detail}</p>
                   </div>
@@ -221,11 +195,8 @@ const AboutSection = ({ innerRef }) => {
   );
 };
 
-
-
 /* ======================================================================
-   SECTION 4 — TECHNOLOGY: data-driven SVG radial metrics (replaces the
-   purely decorative spinning orbital with one that represents real values)
+   SECTION 4 — TECHNOLOGY: data-driven SVG radial metrics
    ====================================================================== */
 
 const RADIAL_R = 52;
@@ -270,7 +241,6 @@ const TechnologySection = ({ innerRef }) => {
     { value: 30, max: 60, suffix: '', label: 'Min Charge' },
     { value: 95, max: 100, suffix: '%', label: 'Efficiency' },
   ];
-  // Plain-text summary for screen readers / no-JS — avoids relying on the animated SVG alone.
   const metricsSummary = metrics.map((m) => `${m.label}: ${m.value}${m.suffix}`).join(', ');
 
   return (
@@ -290,7 +260,6 @@ const TechnologySection = ({ innerRef }) => {
                 <RadialMetric key={m.label} {...m} isInView={isInView} delay={i * 150} />
               ))}
             </div>
-            {/* Announces final values once, after the count-up settles — not on every frame */}
             <p className="sr-only" aria-live="polite">{isInView ? metricsSummary : ''}</p>
 
             <p className="section-text">
@@ -323,9 +292,6 @@ const TechnologySection = ({ innerRef }) => {
 
 /* ======================================================================
    SECTION 5 — TESTIMONIALS: accessible scroll-snap carousel
-   (native horizontal scroll + dot pagination + keyboard, no JS-only
-   dependency; prev/next arrow buttons removed — native scroll/swipe and
-   the dot pagination below remain the navigation surface)
    ====================================================================== */
 
 const TESTIMONIALS = [
@@ -373,7 +339,6 @@ const TestimonialsSection = ({ innerRef }) => {
     goTo(next);
   });
 
-  // Keep `current` in sync if the user scrolls/swipes the track directly.
   useEffect(() => {
     const track = trackRef.current;
     if (!track || typeof IntersectionObserver === 'undefined') return undefined;
@@ -440,8 +405,6 @@ const TestimonialsSection = ({ innerRef }) => {
           ))}
         </div>
 
-        {/* NOTE: left functional (carousel pagination), not wired to navigate —
-            see message accompanying this file for why. */}
         <div className="carousel-dots" role="tablist" aria-label="Select testimonial">
           {TESTIMONIALS.map((t, i) => (
             <button
@@ -522,10 +485,7 @@ const StatsSection = ({ innerRef }) => {
 };
 
 /* ======================================================================
-   SECTION 7 — CONTACT: form removed. This is now a single centered column
-   (info + contact details + image) instead of the old two-column
-   info/form grid — see .contact-grid / .contact-info-centered in Home.css.
-   Phone number added as a contact-item next to the address.
+   SECTION 7 — CONTACT: single centered column
    ====================================================================== */
 
 const ContactSection = ({ innerRef }) => {
@@ -593,46 +553,9 @@ const ContactSection = ({ innerRef }) => {
 const Home = () => {
   const navigate = useNavigate();
   const [activeSection, setActiveSection] = useState(0);
-
-  // FIXED: cursor position is no longer pushed through React state on every
-  // animation frame. Instead we write directly to the reveal image's CSS
-  // custom properties (--x / --y) via a ref. The browser's CSS engine then
-  // handles the radial-gradient mask on the compositor, so mousemove no
-  // longer triggers 60 re-renders/sec (and no canvas.toDataURL() call at
-  // all) — this is what was blocking nav-link clicks on the homepage.
-  const revealRef = useRef(null);
-  const mouse = useRef({ x: -999, y: -999 });
-  const smooth = useRef({ x: -999, y: -999 });
-  const rafRef = useRef(null);
   const sectionRefs = useRef([]);
 
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      mouse.current.x = e.clientX;
-      mouse.current.y = e.clientY;
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-
-    const animate = () => {
-      smooth.current.x += (mouse.current.x - smooth.current.x) * 0.08;
-      smooth.current.y += (mouse.current.y - smooth.current.y) * 0.08;
-      if (revealRef.current) {
-        revealRef.current.style.setProperty('--x', `${smooth.current.x}px`);
-        revealRef.current.style.setProperty('--y', `${smooth.current.y}px`);
-      }
-      rafRef.current = requestAnimationFrame(animate);
-    };
-
-    rafRef.current = requestAnimationFrame(animate);
-
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
-    };
-  }, []);
-
-  // Scroll tracking — unchanged
+  // Scroll tracking
   useEffect(() => {
     const handleScroll = () => {
       const scrollPos = window.scrollY;
@@ -655,13 +578,16 @@ const Home = () => {
     <div className="app">
       <Header activeSection={activeSection} scrollToSection={scrollToSection} />
 
-      {/* SECTION 1: Hero */}
+      {/* SECTION 1: Hero - Simplified */}
       <section className="section hero" ref={el => sectionRefs.current[0] = el}>
-        <SpotlightReveal
-          baseImage={BG_IMAGE_1}
-          revealImage={BG_IMAGE_2}
-          revealRef={revealRef}
+        {/* Single background image */}
+        <div 
+          className="hero-background" 
+          style={{ backgroundImage: `url(${BG_IMAGE})` }}
         />
+        
+        {/* Overlay for better text readability */}
+        <div className="hero-overlay" />
 
         <div className="hero-content">
           <div className="hero-badge">

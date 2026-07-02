@@ -332,15 +332,16 @@ function stockClass(stock) {
   return "status-pill cancelled";
 }
 
-/* ── All non-nav buttons/links in the dashboard are placeholders.
-   Clicking any of them now routes to the 404 page instead of doing nothing. ── */
+/* All placeholder buttons/links across the dashboard route to /404
+   via useNavigate (client-side navigation, no full page reload). */
 function DeadLink({ className, children, ariaLabel }) {
+  const navigate = useNavigate();
+  const handleClick = (e) => {
+    e.preventDefault();
+    navigate("/404");
+  };
   return (
-    <a
-      href="/404"
-      className={className}
-      aria-label={ariaLabel}
-    >
+    <a href="/404" className={className} aria-label={ariaLabel} onClick={handleClick}>
       {children}
     </a>
   );

@@ -115,6 +115,11 @@
   box-shadow: 0 0 20px rgba(0, 168, 232, 0.3);
 }
 
+/* Mobile Login Link - Hidden by default, shown on mobile */
+.mobile-login {
+  display: none;
+}
+
 /* Navigation Actions */
 .nav-actions {
   display: flex;
@@ -203,7 +208,7 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 800px) {
   .navbar {
     top: 12px;
     width: 96%;
@@ -218,6 +223,11 @@
 
   .nav-container {
     padding: 6px 12px;
+  }
+
+  /* INCREASED LOGO SIZE FOR TABLET/MOBILE */
+  .brand-logo {
+    height: 46px;
   }
 
   .nav-links {
@@ -273,6 +283,27 @@
     color: #00a8e8;
   }
 
+  /* Show mobile login link - matches other nav links */
+  .mobile-login {
+    display: block;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    margin-top: 8px;
+    padding-top: 12px;
+    /* Remove the blue color - it will inherit from .nav-link */
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  /* Active state for mobile login - turns blue only when active */
+  .mobile-login.active {
+    background: rgba(0, 168, 232, 0.12);
+    color: #00a8e8;
+  }
+
+  .mobile-login:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: white;
+  }
+
   /* Mobile overlay */
   .navbar.open::before {
     content: '';
@@ -295,10 +326,6 @@
   .menu-toggle {
     display: block;
   }
-
-  .brand-logo {
-    height: 28px;
-  }
 }
 
 @media (max-width: 480px) {
@@ -312,8 +339,9 @@
     padding: 4px 10px;
   }
 
+  /* EVEN LARGER LOGO FOR SMALL PHONES */
   .brand-logo {
-    height: 24px;
+    height: 46px;
   }
 
   .nav-links {
@@ -324,6 +352,19 @@
   .nav-link {
     padding: 10px 14px;
     font-size: 14px;
+  }
+
+  /* Adjust menu toggle button size to match larger logo */
+  .menu-toggle .icon {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+/* Optional: Even larger logo for very small screens */
+@media (max-width: 380px) {
+  .brand-logo {
+    height: 42px;
   }
 }
 
