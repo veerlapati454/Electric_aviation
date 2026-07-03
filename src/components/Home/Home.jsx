@@ -19,6 +19,9 @@ import img6 from "../../assets/img6.webp"
 import img7 from "../../assets/img7.webp"
 import img8 from "../../assets/img8.webp"
 import img9 from "../../assets/img9.webp"
+import img10 from "../../assets/img10.webp"
+import img11 from "../../assets/img11.webp"
+import img12 from "../../assets/img12.webp"
 
 // --- Icons ---
 const ArrowIcon = () => (
@@ -298,19 +301,19 @@ const TESTIMONIALS = [
   {
     name: 'Sarah Chen',
     role: 'Test Pilot',
-    avatar: 'https://i.pravatar.cc/150?img=1',
+    avatar: img10,
     quote: 'The silence is surreal. You feel connected to the sky in a way you never could before.',
   },
   {
     name: 'James Rodriguez',
     role: 'Commercial Pilot',
-    avatar: 'https://i.pravatar.cc/150?img=2',
+    avatar: img11,
     quote: "Incredible range and performance. This isn't the future, it's the present.",
   },
   {
     name: 'Emily Park',
     role: 'Aerospace Engineer',
-    avatar: 'https://i.pravatar.cc/150?img=3',
+    avatar: img12,
     quote: 'The instant torque and smooth power delivery make every flight effortless.',
   },
 ];

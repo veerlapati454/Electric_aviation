@@ -6,6 +6,7 @@ import img12 from "../../assets/img12.webp"
 import img21 from "../../assets/img21.webp"
 import img22 from "../../assets/img22.webp"
 import img23 from "../../assets/img23.webp"
+import img3 from "../../assets/img3.webp"
 
 
 const Testimonals = () => {
@@ -176,7 +177,7 @@ const Testimonals = () => {
               <div className="featured-quote-mark">"</div>
               <div className="featured-image">
                 <img 
-                  src="https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=800&q=80" 
+                  src= {img3} 
                   alt="Featured aircraft"
                 />
               </div>
