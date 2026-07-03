@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./Login.css";
 import { useNavigate,Link } from "react-router-dom";
+import logo from "../../assets/stackly_logo.webp";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -33,7 +34,15 @@ export default function Login() {
     <div className="stage">
       {/* LEFT: INSTRUMENT PANEL — hidden on mobile */}
       <div className="instrument">
-        
+        <div
+          className="brand"
+          onClick={() => {
+            navigate("/");
+            window.scrollTo({ top: 0, behavior: "instant" });
+          }}
+        >
+          <img src={logo} alt="Company Logo" className="brand-mark" />
+        </div>
 
         <div className="gauge-wrap">
           <div className="gauge">

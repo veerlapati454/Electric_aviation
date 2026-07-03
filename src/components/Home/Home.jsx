@@ -19,9 +19,10 @@ import img6 from "../../assets/img6.webp"
 import img7 from "../../assets/img7.webp"
 import img8 from "../../assets/img8.webp"
 import img9 from "../../assets/img9.webp"
-import img10 from "../../assets/img10.webp"
-import img11 from "../../assets/img11.webp"
-import img12 from "../../assets/img12.webp"
+import img31 from "../../assets/img31.webp"
+import img32 from "../../assets/img32.webp"
+import img33 from "../../assets/img33.webp"
+import img34 from "../../assets/img34.webp"
 
 // --- Icons ---
 const ArrowIcon = () => (
@@ -301,19 +302,19 @@ const TESTIMONIALS = [
   {
     name: 'Sarah Chen',
     role: 'Test Pilot',
-    avatar: img10,
+    avatar: img31,
     quote: 'The silence is surreal. You feel connected to the sky in a way you never could before.',
   },
   {
     name: 'James Rodriguez',
     role: 'Commercial Pilot',
-    avatar: img11,
+    avatar: img33,
     quote: "Incredible range and performance. This isn't the future, it's the present.",
   },
   {
     name: 'Emily Park',
     role: 'Aerospace Engineer',
-    avatar: img12,
+    avatar: img32,
     quote: 'The instant torque and smooth power delivery make every flight effortless.',
   },
 ];
@@ -532,8 +533,8 @@ const ContactSection = ({ innerRef }) => {
           </button>
           <div className="contact-image-card glass-card">
             <img
-              src={IMG_NIGHTFLIGHT}
-              srcSet={`${IMG_NIGHTFLIGHT.replace('w=1400', 'w=700')} 700w, ${IMG_NIGHTFLIGHT} 1400w`}
+              src={img34}
+              srcSet={`${img34.replace('w=1400', 'w=700')} 700w, ${img34} 1400w`}
               sizes="(max-width: 768px) 100vw, 60vw"
               alt="Electric aircraft taking off at night"
               loading="lazy"

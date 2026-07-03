@@ -64,7 +64,11 @@ function Footer() {
             <img src={logo} alt="Stackly Logo" />
           </div>
 
-         
+          <p className="footer-tagline">
+            Stackly helps teams design, build, and ship products faster —
+            combining powerful tools with a seamless workflow trusted by
+            creators worldwide.
+          </p>
 
           {/* Social icons */}
           <div className="footer-social">

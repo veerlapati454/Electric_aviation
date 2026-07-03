@@ -6,7 +6,13 @@ import img12 from "../../assets/img12.webp"
 import img21 from "../../assets/img21.webp"
 import img22 from "../../assets/img22.webp"
 import img23 from "../../assets/img23.webp"
-import img3 from "../../assets/img3.webp"
+import img40 from "../../assets/img40.webp"
+import img41 from "../../assets/img41.webp"
+import img42 from "../../assets/img42.webp"
+import img43 from "../../assets/img43.webp"
+import img44 from "../../assets/img44.webp"
+import img45 from "../../assets/img45.webp"
+
 
 
 const Testimonals = () => {
@@ -27,7 +33,7 @@ const Testimonals = () => {
     {
       name: 'Dr. Sarah Chen',
       role: 'Test Pilot',
-      avatar: img10,
+      avatar: img41,
       quote: 'The silence is surreal. You feel connected to the sky in a way you never could before.',
       rating: 5,
       date: 'December 2024'
@@ -35,7 +41,7 @@ const Testimonals = () => {
     {
       name: 'James Rodriguez',
       role: 'Commercial Pilot',
-      avatar: img11,
+      avatar: img42,
       quote: 'Incredible range and performance. This is not the future—it is the present.',
       rating: 5,
       date: 'November 2024'
@@ -43,7 +49,7 @@ const Testimonals = () => {
     {
       name: 'Emily Park',
       role: 'Aerospace Engineer',
-      avatar: img12,
+      avatar: img43,
       quote: 'The instant torque and smooth power delivery make every flight effortless.',
       rating: 5,
       date: 'October 2024'
@@ -59,7 +65,7 @@ const Testimonals = () => {
     {
       name: 'Dr. Lisa Nakamura',
       role: 'Environmental Scientist',
-      avatar: img12,
+      avatar: img44,
       quote: 'Zero emissions without compromising performance. A true breakthrough.',
       rating: 5,
       date: 'August 2024'
@@ -177,7 +183,7 @@ const Testimonals = () => {
               <div className="featured-quote-mark">"</div>
               <div className="featured-image">
                 <img 
-                  src= {img3} 
+                  src= {img40} 
                   alt="Featured aircraft"
                 />
               </div>

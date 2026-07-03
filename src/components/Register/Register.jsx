@@ -1,6 +1,7 @@
 import { useState } from "react";
 import "./Register.css";
 import { useNavigate,Link } from "react-router-dom";
+import logo from "../../assets/stackly_logo.webp";
 
 // Letters and spaces only (e.g. "Arjun Mehta")
 const NAME_REGEX = /^[A-Za-z]+(?:\s[A-Za-z]+)*$/;
@@ -66,6 +67,16 @@ export default function Register() {
     <div className="stage">
       {/* LEFT: INSTRUMENT PANEL — hidden on mobile */}
       <div className="instrument">
+        <div
+          className="brand"
+          onClick={() => {
+            navigate("/");
+            window.scrollTo({ top: 0, behavior: "instant" });
+          }}
+        >
+          <img src={logo} alt="Company Logo" className="brand-mark" />
+        </div>
+
         <div className="gauge-wrap">
           <div className="gauge">
             <svg viewBox="0 0 160 160">
@@ -129,12 +140,12 @@ export default function Register() {
       {/* RIGHT: REGISTER */}
       <div className="login">
         <div className="login-inner">
-          <a href="/404" className="back-home">
+          <Link to="/" className="back-home">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M19 12H5M12 19l-7-7 7-7" />
             </svg>
             Back to Home
-          </a>
+          </Link>
 
           <div className="eyebrow">PRE-FLIGHT REGISTRATION</div>
           <h1 className="login-title">Join the fleet</h1>

@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Tech.css';
-import img7 from "../../assets/img7.webp"
-import img2 from "../../assets/img2.webp"
-import img6 from "../../assets/img6.webp"
-import img3 from "../../assets/img3.webp"
+import img35 from "../../assets/img35.webp"
+import img36 from "../../assets/img36.webp"
+import img37 from "../../assets/img37.webp"
+import img38 from "../../assets/img38.webp"
 
 const ArrowIcon = () => (
   <svg className="icon-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -34,28 +34,28 @@ const Tech = () => {
       icon: '🔋',
       description: 'Advanced solid-state cells with 450 Wh/kg energy density',
       specs: ['450 Wh/kg', '30 min charge', '2000+ cycles'],
-      image: img7
+      image: img35
     },
     {
       name: 'Propulsion System',
       icon: '⚡',
       description: 'Dual-coil axial flux motor with 300 kW peak power',
       specs: ['300 kW', '95% efficiency', 'Direct drive'],
-      image: img2
+      image: img36
     },
     {
       name: 'Aerodynamics',
       icon: '🛩️',
       description: 'Optimized carbon-fiber airframe for maximum efficiency',
       specs: ['Drag coefficient 0.02', 'Carbon-fiber', '6 passengers'],
-      image: img6
+      image: img37
     },
     {
       name: 'Avionics',
       icon: '📡',
       description: 'Integrated flight control system with real-time AI assistance',
       specs: ['AI-powered', 'Real-time monitoring', 'Redundant systems'],
-      image: img3
+      image: img38
     }
   ];
 

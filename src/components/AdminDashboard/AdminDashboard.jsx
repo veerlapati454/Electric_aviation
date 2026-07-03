@@ -55,7 +55,7 @@ import {
 } from "lucide-react";
 import "./AdminDashboard.css";
 import logo from "../../assets/stackly_logo.webp"
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 const NAV_ITEMS = [
   { label: "Dashboard", icon: LayoutGrid, view: "dashboard" },
@@ -322,17 +322,25 @@ function DeadLink({ className, children, ariaLabel }) {
 
 export default function AdminDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [activeView, setActiveView] = useState("dashboard");
-  const navigate=useNavigate();
+  const navigate = useNavigate();
+
+  // The active tab now lives in the URL (/admin-dashboard/:view) instead of
+  // local component state. This is the key fix: local state is wiped out
+  // whenever this component unmounts (e.g. when a notification click
+  // navigates to /404). Reading the view from the URL means that when the
+  // browser goes back one step in history, React Router restores the exact
+  // URL you were on — Pilots, Fleet, whatever — and this component re-derives
+  // the correct tab instead of always resetting to "dashboard".
+  const { view } = useParams();
+  const activeView = VIEW_HEADINGS[view] ? view : "dashboard";
 
   const handleLogout = () => {
     setSidebarOpen(false);
-   
-    navigate("/login")
+    navigate("/login");
   };
 
-  const goToView = (view) => {
-    setActiveView(view);
+  const goToView = (nextView) => {
+    navigate(`/admin-dashboard/${nextView}`);
     setSidebarOpen(false);
   };
 

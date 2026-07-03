@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
   LayoutGrid,
   Users,
@@ -56,7 +56,7 @@ import {
 } from "lucide-react";
 import "./UserDashboard.css";
 import logo from "../../assets/stackly_logo.webp"
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 /* ── Logo ── same footprint/placement as the reference, reskinned for electric aviation ── */
 function VoltAirLogo() {
@@ -88,6 +88,10 @@ const NAV_ITEMS = [
   { label: "Settings", icon: SettingsIcon, view: "settings" },
   { label: "Help & Support", icon: HelpCircle, view: "help" },
 ];
+
+/* Valid view keys — used to validate the :view route param and fall back
+   to "dashboard" for anything unrecognized (e.g. /user-dashboard alone). */
+const VALID_VIEWS = NAV_ITEMS.map((n) => n.view);
 
 const STATS = [
   { label: "Total Flights Logged", value: "3,842", up: true,  icon: PlaneTakeoff },
@@ -349,18 +353,36 @@ function DeadLink({ className, children, ariaLabel }) {
 
 export default function UserDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [activeView, setActiveView] = useState("dashboard");
+
+  // activeView now comes from the URL (/user-dashboard/:view) instead of
+  // local-only state. This is what makes browser Back/Forward — and the
+  // 404 page's "Go Back" button — land on the tab the user was actually
+  // on, instead of always resetting to the default "dashboard" view.
+  const { view } = useParams();
+  const activeView = VALID_VIEWS.includes(view) ? view : "dashboard";
+
   const contentRef = useRef(null);
-  const navigate=useNavigate();
+  const navigate = useNavigate();
+
+  // If someone lands on plain /user-dashboard (no view segment) or on an
+  // unrecognized view, normalize the URL to a real, distinct history
+  // entry: /user-dashboard/dashboard.
+  useEffect(() => {
+    if (view !== activeView) {
+      navigate(`/user-dashboard/${activeView}`, { replace: true });
+    }
+  }, [view, activeView, navigate]);
 
   const handleLogout = () => {
     setSidebarOpen(false);
-    navigate("/login")
+    navigate("/login");
   };
 
-  const goToView = (view) => {
-    setActiveView(view);
+  const goToView = (nextView) => {
     setSidebarOpen(false);
+    // Pushes a new history entry per tab, e.g. /user-dashboard/settings,
+    // so Back/Forward (and 404's Go Back) can return to the exact tab.
+    navigate(`/user-dashboard/${nextView}`);
     // Scroll the actual scrollable content container back to the top.
     // (window.scrollTo alone does nothing when the scroll happens inside
     // the dash-content panel rather than on the window itself.)

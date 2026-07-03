@@ -1,4 +1,3 @@
-
 import { HashRouter, Routes, Route } from "react-router-dom";
 
 import MainLayout from "./components/MainLayout/MainLayout";
@@ -32,9 +31,19 @@ function App() {
         </Route>
         <Route path="/register" element={<Register/>}/>
         <Route path="/login" element={<Login/>}/>
-        <Route path="/user-dashboard" element={<UserDashboard/>}/>
-        <Route path="/admin-dashboard" element={<AdminDashboard/>}/>
-   
+        {/* :view? is optional — /user-dashboard alone still matches and
+            the component redirects it to /user-dashboard/dashboard.
+            /user-dashboard/pilots, /user-dashboard/settings, etc. are now
+            real, distinct URLs that live in browser history, so Go Back
+            from the 404 page returns to the exact tab the user was on,
+            instead of always resetting to the default dashboard view. */}
+        <Route path="/user-dashboard/:view?" element={<UserDashboard/>}/>
+        {/* :view? is optional — /admin-dashboard alone still matches and
+            defaults to the "dashboard" tab. /admin-dashboard/pilots,
+            /admin-dashboard/messages, etc. now become real, distinct URLs
+            that live in browser history, so Go Back can return to them. */}
+        <Route path="/admin-dashboard/:view?" element={<AdminDashboard/>}/>
+
         <Route path="*" element={<ElectricAviation404/>}/>
 
       </Routes>
