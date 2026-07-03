@@ -11,7 +11,6 @@ import {
   Search,
   LogOut,
   Menu,
-  X,
   TrendingUp,
   TrendingDown,
   FilePlus,
@@ -403,9 +402,7 @@ export default function UserDashboard() {
           <div className="dash-logo-placeholder" aria-label="Logo">
              <img src={logo} alt="" />
           </div>
-          <button className="dash-sidebar-close" onClick={() => setSidebarOpen(false)} aria-label="Close menu">
-            <X />
-          </button>
+          
         </div>
 
         <nav className="dash-nav">

@@ -9,11 +9,7 @@ const MenuIcon = () => (
   </svg>
 );
 
-const CloseIcon = () => (
-  <svg className="icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-  </svg>
-);
+// Remove CloseIcon entirely since we don't need it
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -120,7 +116,7 @@ const Header = () => {
             aria-label="Toggle menu"
             aria-expanded={isMenuOpen}
           >
-            {isMenuOpen ? <CloseIcon /> : <MenuIcon />}
+            <MenuIcon />
           </button>
         </div>
       </div>

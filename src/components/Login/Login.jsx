@@ -41,7 +41,6 @@ export default function Login() {
             window.scrollTo({ top: 0, behavior: "instant" });
           }}
         >
-          <img src={logo} alt="Company Logo" className="brand-mark" />
         </div>
 
         <div className="gauge-wrap">
@@ -113,7 +112,7 @@ export default function Login() {
             Back to Home
           </a>
 
-          <div className="eyebrow">PRE-FLIGHT SIGN IN</div>
+          <img src={logo} alt="Company Logo" className="form-logo" />
           <h1 className="login-title">Welcome back to the fleet</h1>
           <p className="sub">
             Sign in to monitor charge status, plan routes, and manage your electric aircraft.

@@ -74,7 +74,6 @@ export default function Register() {
             window.scrollTo({ top: 0, behavior: "instant" });
           }}
         >
-          <img src={logo} alt="Company Logo" className="brand-mark" />
         </div>
 
         <div className="gauge-wrap">
@@ -147,7 +146,7 @@ export default function Register() {
             Back to Home
           </Link>
 
-          <div className="eyebrow">PRE-FLIGHT REGISTRATION</div>
+          <img src={logo} alt="Company Logo" className="form-logo" />
           <h1 className="login-title">Join the fleet</h1>
           <p className="sub">
             Create an account to monitor charge status, plan routes, and manage your electric aircraft.
