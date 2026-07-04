@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./Login.css";
-import { useNavigate,Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import logo from "../../assets/stackly_logo.webp";
 
 export default function Login() {
@@ -9,7 +9,7 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [role, setRole] = useState("user");
   const [error, setError] = useState("");
-  const navigate=useNavigate();
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -22,11 +22,10 @@ export default function Login() {
     // Any password is accepted — no strength/match validation here.
     setError("");
 
-    // Swap window.location for your router's navigate() if using react-router.
     if (role === "admin") {
       navigate("/admin-dashboard");
     } else {
-      navigate("/user-dashboard")
+      navigate("/user-dashboard");
     }
   };
 
@@ -105,12 +104,12 @@ export default function Login() {
       {/* RIGHT: LOGIN */}
       <div className="login">
         <div className="login-inner">
-          <a href="/" className="back-home">
+          <Link to="/" className="back-home">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M19 12H5M12 19l-7-7 7-7" />
             </svg>
             Back to Home
-          </a>
+          </Link>
 
           <img src={logo} alt="Company Logo" className="form-logo" />
           <h1 className="login-title">Welcome back to the fleet</h1>
@@ -194,13 +193,11 @@ export default function Login() {
               </div>
             </div>
 
-            
-
             <div className="row-between">
               <span></span>
-              <a href="/404" className="link">
+              <Link to="/404" className="link">
                 Forgot password?
-              </a>
+              </Link>
             </div>
 
             <button type="submit" className="engage">
